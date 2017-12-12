@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Client
 {
+    //Aaron test
     class Client
     {
         TcpClient clientSocket;
