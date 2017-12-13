@@ -27,11 +27,11 @@ namespace Server
         }
         private void AcceptClient()
         {
-            TcpClient clientSocket = default(TcpClient);
-            clientSocket = server.AcceptTcpClient();
+            TcpClient clientSocket = default(TcpClient); //sets clientSocket to null (where type is unknown) tcpClient by same name exists in Client.client
+            clientSocket = server.AcceptTcpClient(); //nothing has called the Server() method yet, but it wants to use a built in method already.  Accepts a pending connection request
             Console.WriteLine("Connected");
-            NetworkStream stream = clientSocket.GetStream();
-            client = new Client(stream, clientSocket);
+            NetworkStream stream = clientSocket.GetStream(); //Returns the NetworkStream used to send and recieve data
+            client = new Client(stream, clientSocket); //instantiates new client on server
         }
         private void Respond(string body)
         {
