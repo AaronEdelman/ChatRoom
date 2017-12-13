@@ -15,8 +15,8 @@ namespace Server
         public Client(NetworkStream Stream, TcpClient Client)
         {
             stream = Stream;
-            client = Client;
-            UserId = "495933b6-1762-47a1-b655-483510072e73"; //dictionary values should replace this value
+            client = Client; //dictionary values should replace this value
+            UserId = "1";
         }
         public void Send(string Message)
         {
@@ -25,10 +25,14 @@ namespace Server
         }
         public string Recieve()
         {
-            byte[] recievedMessage = new byte[256]; // creates empty array of bytes
-            stream.Read(recievedMessage, 0, recievedMessage.Length); //message comes in through stream (stream link created when client is instantiated in Server class), reads stream
+            byte[] recievedMessage = new byte[256];// creates empty array of bytes
+            byte[] key = new byte[256];
+            stream.Read(key, 0, 2);
+            string userIdFull = Encoding.ASCII.GetString(key);
+            UserId = userIdFull.Substring(0, 2);
+            stream.Read(recievedMessage, 0, recievedMessage.Length); //message comes in through stream (stream link created when client is instantiated in Server class), reads bytes
             string recievedMessageString = Encoding.ASCII.GetString(recievedMessage); //converts bytes from stream into string
-            Console.WriteLine(recievedMessageString); 
+            Console.Write(UserId + ": " + recievedMessageString); 
             return recievedMessageString;
         }
     }

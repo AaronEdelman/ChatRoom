@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    //Aaron test, joes test is better
+    //Aaron test
     class Client
     {
         TcpClient clientSocket;
-        NetworkStream stream; // TODO: Create new NetworkStream?
+        NetworkStream stream;
+        string key = "12";// TODO: Create new NetworkStream?
         public Client(string IP, int port)
         {
             clientSocket = new TcpClient(); //provides client connections for TCP network services
@@ -21,7 +22,9 @@ namespace Client
         }
         public void Send()
         {
-            string messageString = UI.GetInput(); //takes user input from UI class
+            string messageStringInput = UI.GetInput(); //takes user input from UI class
+            string messageString = key + messageStringInput;
+            Console.WriteLine(messageString);
             byte[] message = Encoding.ASCII.GetBytes(messageString); //converts input string to byte format
             stream.Write(message, 0, message.Count()); //copies input message (byte form) from buffer to curretn stream, '0' is where buffer starts, 'message.count' is where buffer ends.
         }
