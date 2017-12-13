@@ -17,7 +17,7 @@ namespace Server
         public Server()
         {
             server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);
-            server.Start();
+            server.Start(); //starts listening for incoming connection requests
         }
         public void Run()
         {
@@ -28,7 +28,7 @@ namespace Server
         private void AcceptClient()
         {
             TcpClient clientSocket = default(TcpClient); //sets clientSocket to null (where type is unknown) tcpClient by same name exists in Client.client
-            clientSocket = server.AcceptTcpClient(); //nothing has called the Server() method yet, but it wants to use a built in method already.  Accepts a pending connection request
+            clientSocket = server.AcceptTcpClient(); //Accepts a pending connection request
             Console.WriteLine("Connected");
             NetworkStream stream = clientSocket.GetStream(); //Returns the NetworkStream used to send and recieve data
             client = new Client(stream, clientSocket); //instantiates new client on server
