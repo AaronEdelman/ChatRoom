@@ -26,7 +26,7 @@ namespace Server
         }
         public string Recieve()
         {
-            string message = RecieveMessage().Result;
+            string message = RecieveMessage();
             return message;
             //byte[] recievedMessage = new byte[256];// creates empty array of bytes
             //byte[] key = new byte[256];
@@ -38,10 +38,8 @@ namespace Server
             //Console.Write(UserId + ": " + recievedMessageString); 
             //return recievedMessageString;
         }
-        public Task<string> RecieveMessage()
+        public string RecieveMessage()
         {
-            return Task.Run(() =>
-            {
                 while (true)
                 {
                     byte[] recievedMessage = new byte[256];// creates empty array of bytes
@@ -54,19 +52,14 @@ namespace Server
                     Console.Write(UserId + ": " + recievedMessageString);
                     return recievedMessageString;
                 }
-            });
         }
-        public Task SendMessage(string Message)
+        public void SendMessage(string Message)
         {
-            return Task.Run(() =>
-            {
                 while (true)
                 {
                     byte[] message = Encoding.ASCII.GetBytes(Message);//converts string to bytes
                     stream.Write(message, 0, message.Count()); //writes message (bytes) to stream 
-
                 }
-            });
         }
     }
 }

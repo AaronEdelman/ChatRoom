@@ -24,32 +24,42 @@ namespace Server
         public void Run()
         {
             clientList = new List<Client>();
-            Accept();
-            string message = client.Recieve();
-            Respond(message);
+            //Accept();
+            //string message = client.Recieve();
+            //string message = 
+            InvokeAcceptReceive();
+            //Respond(message);
         }
         public void AcceptClient()
         {
-            TcpClient clientSocket = default(TcpClient); //sets clientSocket to null (where type is unknown) tcpClient by same name exists in Client.client
-            clientSocket = server.AcceptTcpClient(); //Accepts a pending connection request
-            Console.WriteLine("Connected");
-            NetworkStream stream = clientSocket.GetStream(); //Returns the NetworkStream used to send and recieve data
-            client = new Client(stream, clientSocket); //instantiates new client on server
-            clientList.Add(client);
-        }
-        private void Respond(string body)
-        {
-             client.Send(body);
-        }
-        private Task Accept()
-        {
-            return Task.Run(() =>
+            Task.Run(() =>
             {
                 while (true)
                 {
-                    AcceptClient();
+                    TcpClient clientSocket = default(TcpClient); //sets clientSocket to null (where type is unknown) tcpClient by same name exists in Client.client
+                    clientSocket = server.AcceptTcpClient(); //Accepts a pending connection request
+                    Console.WriteLine("Connected");
+                    NetworkStream stream = clientSocket.GetStream(); //Returns the NetworkStream used to send and recieve data
+                    client = new Client(stream, clientSocket); //instantiates new client on server
+                    clientList.Add(client);
                 }
             });
         }
+        private void Respond(string body)
+        {
+            client.Send(body);
+        }
+        private void InvokeAcceptReceive()
+        {
+            Parallel.Invoke(() =>
+            {
+                AcceptClient();
+            },
+            () =>
+            {
+                string message = client.RecieveMessage();
+            });
+        }
     }
+
 }
