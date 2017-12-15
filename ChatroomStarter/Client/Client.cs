@@ -13,7 +13,7 @@ namespace Client
     {
         TcpClient clientSocket;
         NetworkStream stream;
-        string key = "12";
+        string key;
         public Client(string IP, int port, string key)
         {
             clientSocket = new TcpClient(); //provides client connections for TCP network services

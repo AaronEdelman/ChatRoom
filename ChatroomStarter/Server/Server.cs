@@ -15,6 +15,7 @@ namespace Server
             public static Client client;
             TcpListener server;
             Dictionary<int, Client> dictionary;
+            Queue<Message> queue;
             public Server()
             {
                 server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);
@@ -22,11 +23,17 @@ namespace Server
             }
             public void Run()
             {
+                queue = new Queue<Message>();
                 dictionary = new Dictionary<int, Client>();
                 AcceptClient();
-            while (true)
+                while (true)
             {
                 string message = client.Recieve();
+                Message messageObj = new Message(client, message);
+                queue.Enqueue(messageObj);
+                Message chat = queue.Dequeue();
+                Console.WriteLine(chat.UserId + ":" + chat.Body);
+                //Console.WriteLine(queue.name + ":" + message);
                 Respond(message);
             }
             }

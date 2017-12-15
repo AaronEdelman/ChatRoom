@@ -37,12 +37,11 @@ namespace Server
                 if (name == null)
                 {
                     name = message;
-                    return messageString;
+                    return "***has joined the chat***";
                 }
                 else
                 {
-                    Console.WriteLine(message);
-                    return messageString;
+                    return message;
                 }
         }
 
