@@ -12,6 +12,8 @@ namespace Server
         NetworkStream stream;
         TcpClient client;
         public string UserId;
+        public int key;
+        public string name;
         public Client(NetworkStream Stream, TcpClient Client)
         {
             stream = Stream;
@@ -27,9 +29,21 @@ namespace Server
         {
                 byte[] recievedMessage = new byte[256];
                 stream.Read(recievedMessage, 0, recievedMessage.Length);
-                string recievedMessageString = Encoding.ASCII.GetString(recievedMessage);
-                Console.WriteLine(recievedMessageString);
-                return recievedMessageString;
+                string messageString = Encoding.ASCII.GetString(recievedMessage);
+                string keyString = messageString.Substring(0, 2);
+                key = Int32.Parse(keyString);
+                string recievedMessageString = messageString.Replace("\0", "");
+                string message = recievedMessageString.Replace(keyString, "");
+                if (name == null)
+                {
+                    name = message;
+                    return messageString;
+                }
+                else
+                {
+                    Console.WriteLine(message);
+                    return messageString;
+                }
         }
 
     }

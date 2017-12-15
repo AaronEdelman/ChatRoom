@@ -13,11 +13,9 @@ namespace Client
             List<Client> clientList = new List<Client>();
             Client client = new Client("127.0.0.1", 9999, "11"); // 127.0.0.1 ip loops back to this machine (routes traffic back to computer - communicating with self)
             clientList.Add(client);
+            Client client1 = new Client("127.0.0.1", 9999, "22");
+            clientList.Add(client1);
             Invoke(clientList);
-            //client.Send();
-            //client.Recieve();
-            //client1.Send();
-            //client1.Recieve();
             Console.ReadLine();
         }
         public static void Invoke(List<Client> clientList)

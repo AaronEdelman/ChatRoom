@@ -14,6 +14,7 @@ namespace Server
         {
             public static Client client;
             TcpListener server;
+            Dictionary<int, Client> dictionary;
             public Server()
             {
                 server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);
@@ -21,6 +22,7 @@ namespace Server
             }
             public void Run()
             {
+                dictionary = new Dictionary<int, Client>();
                 AcceptClient();
             while (true)
             {
@@ -35,6 +37,7 @@ namespace Server
                 Console.WriteLine("Connected");
                 NetworkStream stream = clientSocket.GetStream();
                 client = new Client(stream, clientSocket);
+                dictionary.Add(client.key, client);
             }
             private void Respond(string body)
             {

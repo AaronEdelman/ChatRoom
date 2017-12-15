@@ -42,32 +42,6 @@ namespace Client
                 stream.Read(recievedMessage, 0, recievedMessage.Length); // returns byte array of values between '0' and message length
                 UI.DisplayMessage(Encoding.ASCII.GetString(recievedMessage)); //converts received byte array into string
             }
-            }
-        private Task SendMessage()
-        {
-            return Task.Run(() =>
-            {
-                while (true)
-                {
-                    string messageStringInput = UI.GetInput(); //takes user input from UI class
-                    string messageString = key + messageStringInput;
-                    Console.WriteLine(messageString);
-                    byte[] message = Encoding.ASCII.GetBytes(messageString); //converts input string to byte format
-                    stream.Write(message, 0, message.Count());
-                }
-            });
-        }
-        private Task ReceiveMessage()
-        {
-            return Task.Run(() =>
-            {
-                while (true)
-                {
-                    byte[] recievedMessage = new byte[256]; //received message taken in as byte array
-                    stream.Read(recievedMessage, 0, recievedMessage.Length); // returns byte array of values between '0' and message length
-                    UI.DisplayMessage(Encoding.ASCII.GetString(recievedMessage));
-                }
-            });
         }
     }
 }
