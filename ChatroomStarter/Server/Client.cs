@@ -15,51 +15,22 @@ namespace Server
         public Client(NetworkStream Stream, TcpClient Client)
         {
             stream = Stream;
-            client = Client; //dictionary values should replace this value
-            UserId = "1";
+            client = Client;
+            UserId = "495933b6-1762-47a1-b655-483510072e73";
         }
         public void Send(string Message)
         {
-            SendMessage(Message);
-            //byte[] message = Encoding.ASCII.GetBytes(Message);//converts string to bytes
-            //stream.Write(message, 0, message.Count()); //writes message (bytes) to stream 
+            byte[] message = Encoding.ASCII.GetBytes(Message);
+            stream.Write(message, 0, message.Count());
         }
         public string Recieve()
         {
-            string message = RecieveMessage();
-            return message;
-            //byte[] recievedMessage = new byte[256];// creates empty array of bytes
-            //byte[] key = new byte[256];
-            //stream.Read(key, 0, 2);
-            //string userIdFull = Encoding.ASCII.GetString(key);
-            //UserId = userIdFull.Substring(0, 2);
-            //stream.Read(recievedMessage, 0, recievedMessage.Length); //message comes in through stream (stream link created when client is instantiated in Server class), reads bytes
-            //string recievedMessageString = Encoding.ASCII.GetString(recievedMessage); //converts bytes from stream into string
-            //Console.Write(UserId + ": " + recievedMessageString); 
-            //return recievedMessageString;
+                byte[] recievedMessage = new byte[256];
+                stream.Read(recievedMessage, 0, recievedMessage.Length);
+                string recievedMessageString = Encoding.ASCII.GetString(recievedMessage);
+                Console.WriteLine(recievedMessageString);
+                return recievedMessageString;
         }
-        public string RecieveMessage()
-        {
-                while (true)
-                {
-                    byte[] recievedMessage = new byte[256];// creates empty array of bytes
-                    byte[] key = new byte[256];
-                    stream.Read(key, 0, 2);
-                    string userIdFull = Encoding.ASCII.GetString(key);
-                    UserId = userIdFull.Substring(0, 2);
-                    stream.Read(recievedMessage, 0, recievedMessage.Length); //message comes in through stream (stream link created when client is instantiated in Server class), reads bytes
-                    string recievedMessageString = Encoding.ASCII.GetString(recievedMessage); //converts bytes from stream into string
-                    Console.Write(UserId + ": " + recievedMessageString);
-                    return recievedMessageString;
-                }
-        }
-        public void SendMessage(string Message)
-        {
-                while (true)
-                {
-                    byte[] message = Encoding.ASCII.GetBytes(Message);//converts string to bytes
-                    stream.Write(message, 0, message.Count()); //writes message (bytes) to stream 
-                }
-        }
+
     }
 }
