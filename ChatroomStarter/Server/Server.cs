@@ -18,6 +18,7 @@ namespace Server
             Queue<Message> queue;
             public Server()
             {
+                string hostIP = GetLocalIPAddress();
                 server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9999);
                 server.Start();
             }
@@ -33,7 +34,6 @@ namespace Server
                 queue.Enqueue(messageObj);
                 Message chat = queue.Dequeue();
                 Console.WriteLine(chat.UserId + ":" + chat.Body);
-                //Console.WriteLine(queue.name + ":" + message);
                 Respond(message);
             }
             }
@@ -49,6 +49,19 @@ namespace Server
             private void Respond(string body)
             {
                 client.Send(body);
+            }
+            public string GetLocalIPAddress()
+            {
+                var host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (var ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        Console.WriteLine(ip.ToString());
+                        return ip.ToString();
+                    }
+                }
+                throw new Exception("No network adapters with an IPv4 address in the system!");
             }
         }
     }
